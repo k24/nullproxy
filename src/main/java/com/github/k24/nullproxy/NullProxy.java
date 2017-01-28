@@ -47,23 +47,10 @@ public final class NullProxy implements InvocationHandler {
     }
 
     private static class ValueHolder {
-        private static final Map<Class<?>, Object> PRIMITIVE_NULLS;
         private static final Map<Class<?>, Object> OTHERS = new HashMap<>();
 
-        static {
-            HashMap<Class<?>, Object> map = new HashMap<>();
-            map.put(boolean.class, false);
-            map.put(char.class, (char) 0);
-            map.put(short.class, (short) 0);
-            map.put(int.class, 0);
-            map.put(long.class, 0L);
-            map.put(float.class, 0f);
-            map.put(double.class, 0.0);
-            PRIMITIVE_NULLS = map;
-        }
-
         public static Object get(Class<?> clazz) {
-            Object value = PRIMITIVE_NULLS.get(clazz);
+            Object value = ObjectUtil.getPrimitiveNull(clazz);
             if (value != null) return value;
             synchronized (OTHERS) {
                 value = OTHERS.get(clazz);
